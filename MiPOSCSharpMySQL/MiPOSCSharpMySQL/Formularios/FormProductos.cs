@@ -15,6 +15,8 @@ namespace MiPOSCSharpMySQL.Formularios
         public FormProductos()
         {
             InitializeComponent();
+            Controlador.ControladorProducto objetoProducto = new Controlador.ControladorProducto();
+            objetoProducto.MostrarProductos(dgvproductos);
         }
 
         private void FormProductos_Load(object sender, EventArgs e)
