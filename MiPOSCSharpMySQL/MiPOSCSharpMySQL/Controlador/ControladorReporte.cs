@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MiPOSCSharpMySQL.Controlador
 {
-    class CrontoladorReporte
+    class ControladorReporte
     {
     }
 }
