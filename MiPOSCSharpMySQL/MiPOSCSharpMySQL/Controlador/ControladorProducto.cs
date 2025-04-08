@@ -119,6 +119,36 @@ namespace MiPOSCSharpMySQL.Controlador
                 objetoConexion.CerrarConexion();
             }
         }
+        // Método público para seleccionar una fila de un DataGridView y mostrar sus datos en TextBoxes.
+        public void Seleccionar(DataGridView totalProductos, TextBox id, TextBox nombre, TextBox precioProducto, TextBox stock)
+        {
+            // Obtiene el índice (posición) de la fila actualmente seleccionada en el DataGridView.
+            int fila = totalProductos.CurrentRow.Index;
+
+            try
+            {
+                // Verifica que el índice de la fila sea válido (es decir, que haya una fila seleccionada).
+                if (fila >= 0)
+                {
+                    // Asigna el valor de la primera celda de la fila (generalmente el ID del producto) al TextBox 'id'.
+                    id.Text = totalProductos.Rows[fila].Cells[0].Value.ToString();
+
+                    // Asigna el valor de la segunda celda (nombre del producto) al TextBox 'nombre'.
+                    nombre.Text = totalProductos.Rows[fila].Cells[1].Value.ToString();
+
+                    // Asigna el valor de la tercera celda (precio del producto) al TextBox 'precioProducto'.
+                    precioProducto.Text = totalProductos.Rows[fila].Cells[2].Value.ToString();
+
+                    // Asigna el valor de la cuarta celda (stock del producto) al TextBox 'stock'.
+                    stock.Text = totalProductos.Rows[fila].Cells[3].Value.ToString();
+                }
+            }
+            catch (Exception e)
+            {
+                // Si ocurre un error (como que una celda tenga valor nulo o no exista), muestra un mensaje con el error.
+                MessageBox.Show("Error al seleccionar " + e.ToString());
+            }
+        }
 
 
     }

@@ -17,6 +17,7 @@ namespace MiPOSCSharpMySQL.Formularios
             InitializeComponent();
             Controlador.ControladorProducto objetoProducto = new Controlador.ControladorProducto();
             objetoProducto.MostrarProductos(dgvproductos);
+            txtid.ReadOnly = true;
         }
 
         private void FormProductos_Load(object sender, EventArgs e)
@@ -34,6 +35,12 @@ namespace MiPOSCSharpMySQL.Formularios
             Controlador.ControladorProducto objetoProducto = new Controlador.ControladorProducto();
             objetoProducto.AgregarProducto(txtnombreproducto, txtprecioproducto, txtstockproducto);
             objetoProducto.MostrarProductos(dgvproductos);
+        }
+
+        private void dgvproductos_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            Controlador.ControladorProducto objetoProducto = new Controlador.ControladorProducto();
+            objetoProducto.Seleccionar(dgvproductos,txtid,txtnombreproducto,txtprecioproducto,txtstockproducto);
         }
     }
 }
