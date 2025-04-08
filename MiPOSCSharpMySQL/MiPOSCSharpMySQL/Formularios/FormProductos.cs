@@ -28,5 +28,12 @@ namespace MiPOSCSharpMySQL.Formularios
         {
 
         }
+
+        private void btnguardar_Click(object sender, EventArgs e)
+        {
+            Controlador.ControladorProducto objetoProducto = new Controlador.ControladorProducto();
+            objetoProducto.AgregarProducto(txtnombreproducto, txtprecioproducto, txtstockproducto);
+            objetoProducto.MostrarProductos(dgvproductos);
+        }
     }
 }

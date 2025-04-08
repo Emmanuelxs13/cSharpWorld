@@ -11,8 +11,7 @@ namespace MiPOSCSharpMySQL.Controlador
 {
     class ControladorProducto
     {
-        public void MostrarProductos(DataGridView tablaTotalProductos)
-        {
+        public void MostrarProductos(DataGridView tablaTotalProductos) {
             Configuracion.CConexion objetoConexion = new Configuracion.CConexion();
             Modelos.ModeloProducto objetoProducto = new Modelos.ModeloProducto();
 
@@ -65,5 +64,62 @@ namespace MiPOSCSharpMySQL.Controlador
                 objetoConexion.CerrarConexion();
             }
         }
+
+
+        // Método público que agrega un producto a la base de datos.
+        // Recibe tres objetos TextBox como parámetros, que contienen los datos del producto.
+        public void AgregarProducto(TextBox nombres, TextBox precioProducto, TextBox stock)
+        {
+            // Se crea una instancia de la clase de conexión, que maneja la conexión a la base de datos.
+            Configuracion.CConexion objetoConexion = new Configuracion.CConexion();
+
+            // Se crea una instancia del modelo de producto, que representa un producto con sus propiedades.
+            Modelos.ModeloProducto objetoProducto = new Modelos.ModeloProducto();
+
+            // Cadena de consulta SQL para insertar un nuevo producto en la tabla "producto".
+            // Se utilizan parámetros para evitar vulnerabilidades de inyección SQL.
+            string consulta = "insert into producto(nombre,precioProducto,stock) values (@nombre,@precioProducto,@stock);";
+
+            try
+            {
+                // Se asigna el valor del TextBox 'nombres' a la propiedad 'NombreProducto' del objeto modelo.
+                objetoProducto.NombreProducto = nombres.Text;
+
+                // Se convierte el texto del TextBox 'precioProducto' a tipo double y se asigna al modelo.
+                objetoProducto.PrecioProducto = double.Parse(precioProducto.Text);
+
+                // Se convierte el texto del TextBox 'stock' a tipo int y se asigna al modelo.
+                objetoProducto.StockProducto = int.Parse(stock.Text);
+
+                // Se establece una conexión con la base de datos usando el método de la clase de conexión.
+                MySqlConnection conexion = objetoConexion.EstableceConexion();
+
+                // Se crea un comando MySQL con la consulta SQL y la conexión activa.
+                MySqlCommand comando = new MySqlCommand(consulta, conexion);
+
+                // Se agregan los valores a los parámetros de la consulta, usando los datos del modelo.
+                comando.Parameters.AddWithValue("@nombre", objetoProducto.NombreProducto);
+                comando.Parameters.AddWithValue("@precioProducto", objetoProducto.PrecioProducto);
+                comando.Parameters.AddWithValue("@stock", objetoProducto.StockProducto);
+
+                // Se ejecuta la consulta de inserción (INSERT) sin retornar resultados (ExecuteNonQuery).
+                comando.ExecuteNonQuery();
+
+                // Se muestra un mensaje al usuario indicando que la operación fue exitosa.
+                MessageBox.Show("Se guardó correctamente");
+            }
+            catch (Exception ex)
+            {
+                // Si ocurre algún error en el proceso, se captura la excepción y se muestra un mensaje de error.
+                MessageBox.Show("Error al guardar, error: " + ex.ToString());
+            }
+            finally
+            {
+                // Se cierra la conexión a la base de datos, se haya producido o no una excepción.
+                objetoConexion.CerrarConexion();
+            }
+        }
+
+
     }
 }
