@@ -33,7 +33,7 @@ namespace MiPOSCSharpMySQL.Formularios
         private void btnguardar_Click(object sender, EventArgs e)
         {
             Controlador.ControladorProducto objetoProducto = new Controlador.ControladorProducto();
-            objetoProducto.AgregarProducto(txtnombreproducto, txtprecioproducto, txtstockproducto);
+            objetoProducto.AgregarProducto(txtnombreproducto,txtprecioproducto,txtstockproducto);
             objetoProducto.MostrarProductos(dgvproductos);
         }
 
@@ -41,6 +41,13 @@ namespace MiPOSCSharpMySQL.Formularios
         {
             Controlador.ControladorProducto objetoProducto = new Controlador.ControladorProducto();
             objetoProducto.Seleccionar(dgvproductos,txtid,txtnombreproducto,txtprecioproducto,txtstockproducto);
+        }
+
+        private void btnmodificar_Click(object sender, EventArgs e)
+        {
+            Controlador.ControladorProducto objetoProducto = new Controlador.ControladorProducto();
+            objetoProducto.ModificarProducto(txtid,txtnombreproducto, txtprecioproducto, txtstockproducto);
+            objetoProducto.MostrarProductos(dgvproductos);
         }
     }
 }
