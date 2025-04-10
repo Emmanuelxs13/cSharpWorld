@@ -119,6 +119,7 @@ namespace MiPOSCSharpMySQL.Controlador
                 objetoConexion.CerrarConexion();
             }
         }
+
         // Método público para seleccionar una fila de un DataGridView y mostrar sus datos en TextBoxes.
         public void Seleccionar(DataGridView totalProductos, TextBox id, TextBox nombre, TextBox precioProducto, TextBox stock)
         {
@@ -147,6 +148,61 @@ namespace MiPOSCSharpMySQL.Controlador
             {
                 // Si ocurre un error (como que una celda tenga valor nulo o no exista), muestra un mensaje con el error.
                 MessageBox.Show("Error al seleccionar " + e.ToString());
+            }
+        }
+
+
+        // Método público para modificar los datos de un cliente existente en la base de datos.
+        // Recibe como parámetros cuatro TextBox que contienen el ID del cliente y sus nuevos datos.
+        public void ModificarProducto(TextBox id, TextBox nombre, TextBox precioProducto, TextBox stock)
+        {
+            // Se crea una instancia del objeto de conexión para interactuar con la base de datos.
+            Configuracion.CConexion objetoConexion = new Configuracion.CConexion();
+
+            // Se crea una instancia del modelo de cliente para almacenar los datos del cliente a modificar.
+            Modelos.ModeloProducto objetoProducto = new Modelos.ModeloProducto();
+
+            // Consulta SQL para actualizar los datos de un cliente específico mediante su ID.
+            // Se utilizan parámetros para evitar inyección SQL.
+            string consulta = "UPDATE producto SET producto.nombre=@nombre, producto.precioProducto=@precioProducto, producto.stock=@stock WHERE producto.idproducto=@id;";
+
+            try
+            {
+                // Se obtiene y asigna el ID del cliente desde el TextBox, convirtiéndolo a entero.
+                objetoProducto.IdProduto = int.Parse(id.Text);
+
+                // Se asignan los nuevos valores del cliente desde los TextBox correspondientes.
+                objetoProducto.NombreProducto = nombre.Text;
+                objetoProducto.PrecioProducto = double.Parse(precioProducto.Text);
+                objetoProducto.StockProducto = int.Parse(stock.Text);
+
+                // Se establece la conexión a la base de datos.
+                MySqlConnection conexion = objetoConexion.EstableceConexion();
+
+                // Se prepara el comando SQL con la consulta y la conexión abierta.
+                MySqlCommand comando = new MySqlCommand(consulta, conexion);
+
+                // Se asignan los valores a los parámetros definidos en la consulta SQL.
+                comando.Parameters.AddWithValue("@id", objetoProducto.IdProduto);
+                comando.Parameters.AddWithValue("@nombre", objetoProducto.NombreProducto);
+                comando.Parameters.AddWithValue("@precioProducto", objetoProducto.PrecioProducto);
+                comando.Parameters.AddWithValue("@stock", objetoProducto.StockProducto);
+
+                // Se ejecuta la consulta UPDATE (no devuelve resultados, por eso se usa ExecuteNonQuery).
+                comando.ExecuteNonQuery();
+
+                // Se muestra un mensaje indicando que la modificación fue exitosa.
+                MessageBox.Show("Se modificó correctamente");
+            }
+            catch (Exception ex)
+            {
+                // En caso de error, se muestra un mensaje con la descripción del problema.
+                MessageBox.Show("No se modificó correctamente, error: " + ex.ToString());
+            }
+            finally
+            {
+                // Se cierra la conexión a la base de datos, independientemente del resultado.
+                objetoConexion.CerrarConexion();
             }
         }
 

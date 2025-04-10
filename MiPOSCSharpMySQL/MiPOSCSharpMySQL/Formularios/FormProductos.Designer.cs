@@ -126,6 +126,7 @@
             this.btnmodificar.TabIndex = 1;
             this.btnmodificar.Text = "Modificar";
             this.btnmodificar.UseVisualStyleBackColor = true;
+            this.btnmodificar.Click += new System.EventHandler(this.btnmodificar_Click);
             // 
             // txtstockproducto
             // 
